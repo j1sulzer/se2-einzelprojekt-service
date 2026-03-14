@@ -11,9 +11,14 @@ import org.springframework.web.bind.annotation.RestController
 class LeaderboardController(
     private val gameResultService: GameResultService
 ) {
-
     @GetMapping
     fun getLeaderboard(): List<GameResult> =
-        gameResultService.getGameResults().sortedWith(compareBy({ -it.score }, { it.id }))
-
+        gameResultService.getGameResults()
+            // sort: score desc (higher better) then timeInSeconds asc (shorter better)
+            .sortedWith(
+                compareByDescending<GameResult> { it.score }
+                    .thenBy { it.timeInSeconds }
+            )
 }
+/*gameResultService.getGameResults()
+.sortedWith(compareBy({ -it.score }, { it.timeInSeconds }))*/
