@@ -54,6 +54,26 @@ class GameResultServiceTests {
     }
 
     @Test
+    fun test_deleteGameResult_removesEntry() {
+        val service = GameResultService()
+
+        val g1 = GameResult(0L, "Player1", 10, 10.0)
+        val g2 = GameResult(0L, "Player2", 20, 20.0)
+
+        service.addGameResult(g1)
+        service.addGameResult(g2)
+
+        val idToDelete = service.getGameResults()[0].id
+
+        service.deleteGameResult(idToDelete)
+
+        val remaining = service.getGameResults()
+
+        assertEquals(1, remaining.size)
+        assertEquals("Player2", remaining[0].playerName)
+    }
+
+    @Test
     fun test_addGameResult_multipleEntries_correctId() {
         val gameResult1 = GameResult(0, "player1", 17, 15.3)
         val gameResult2 = GameResult(0, "player2", 25, 16.0)
